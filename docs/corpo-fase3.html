@@ -319,7 +319,7 @@ pipeline de primeira, e esse caminho está contado nas Seções 8.1 a 8.4. A Tab
 <h3>5.1 Repositório de manifestos</h3>
 <p>O repositório <code>togglemaster-gitops</code> contém apenas YAML: <code>apps/&lt;serviço&gt;/</code> com
 Deployment, Service, ConfigMap, ExternalSecret e, quando existem, HPA e ServiceAccount; <code>base/</code> com
-namespaces, o ClusterSecretStore e o Ingress; e <code>argocd/</code> com uma Application por componente. Parti
+namespaces, o ClusterSecretStore e o Ingress; e <code>argocd/</code> com uma Application por componente. Partiu
 dos manifestos da Fase 2, com três ajustes: os Secrets com valores viraram ExternalSecrets, o ServiceAccount do
 IRSA passou a ser declarado no repositório, e as tabelas dos bancos passaram a ser criadas por Jobs de
 migração (Seção 8.7).</p>
@@ -514,7 +514,8 @@ chegasse ao cluster.</p>
 
 <!-- ═══════════════════════ APÊNDICE B ═══════════════════════ -->
 <h2 id="apb">Apêndice B — De-para: Requisitos do Enunciado × Entregas</h2>
-<table>
+<table class="longa">
+<colgroup><col style="width:38%"><col style="width:36%"><col style="width:26%"></colgroup>
 <tr><th>Requisito do enunciado</th><th>Entrega</th><th class="c">Status</th></tr>
 <tr><td>Networking: VPC, sub-redes públicas e privadas, IGW, route tables</td><td>módulo <code>rede</code></td><td class="c"><span class="ok">Feito</span></td></tr>
 <tr><td>Cluster EKS e Node Groups</td><td>módulo <code>eks</code> (Opção B: roles criadas pelo Terraform)</td><td class="c"><span class="ok">Feito</span></td></tr>
