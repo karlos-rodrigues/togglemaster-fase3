@@ -110,3 +110,30 @@ module "irsa_analytics" {
   politica_json   = data.aws_iam_policy_document.analytics.json
   tags            = local.tags
 }
+
+module "github_oidc" {
+  source       = "../../modulos/github_oidc"
+  nome         = "${var.nome}-github-ci"
+  dono_github  = "karlos-rodrigues"
+  repositorios = var.servicos
+  ecr_arns     = values(module.ecr.arns)
+  tags         = local.tags
+}
+
+module "segredos" {
+  source      = "../../modulos/segredos"
+  prefixo     = var.nome
+  urls_bancos = module.rds.urls
+  redis_url   = "redis://${module.elasticache.endpoint}:${module.elasticache.porta}"
+  sqs_url     = module.sqs.url
+  tags        = local.tags
+}
+
+module "eso" {
+  source        = "../../modulos/eso"
+  nome          = "${var.nome}-external-secrets"
+  oidc_arn      = module.eks.oidc_arn
+  oidc_url      = module.eks.oidc_url
+  segredos_arns = module.segredos.arns
+  tags          = local.tags
+}

@@ -2,6 +2,9 @@ output "enderecos" {
   value = { for k, v in aws_db_instance.this : k => v.address }
 }
 
-output "segredos_arn" {
-  value = { for k, v in aws_db_instance.this : k => v.master_user_secret[0].secret_arn }
+output "urls" {
+  sensitive = true
+  value = {
+    for k, v in aws_db_instance.this : k => "postgres://${v.username}:${random_password.this[k].result}@${v.address}:5432/${v.db_name}"
+  }
 }

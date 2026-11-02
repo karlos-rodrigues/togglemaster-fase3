@@ -19,6 +19,12 @@ resource "aws_vpc_security_group_ingress_rule" "postgres" {
   to_port                      = 5432
 }
 
+resource "random_password" "this" {
+  for_each = var.bancos
+  length   = 32
+  special  = false
+}
+
 resource "aws_db_instance" "this" {
   for_each = var.bancos
 
@@ -30,7 +36,7 @@ resource "aws_db_instance" "this" {
   storage_encrypted                   = true
   db_name                             = each.value
   username                            = "togglemaster"
-  manage_master_user_password         = true
+  password                            = random_password.this[each.key].result
   db_subnet_group_name                = aws_db_subnet_group.this.name
   vpc_security_group_ids              = [aws_security_group.this.id]
   publicly_accessible                 = false
