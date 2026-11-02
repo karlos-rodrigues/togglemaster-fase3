@@ -77,6 +77,8 @@
   table.longa{ break-inside:auto }
   table.longa tr{ break-inside:avoid }
   table.longa thead{ display:table-header-group }
+  h2#apb{ break-before:page }
+  table.longa td.c, table.longa th.c{ white-space:normal }
   table.longa{ font-size:8.8pt }
   table.longa th, table.longa td{ padding:3px 6px }
 </style>
@@ -598,9 +600,9 @@ helm_release.raiz: Creation complete after 4s [id=togglemaster-raiz]
 Apply complete! Resources: 3 added, 0 changed, 0 destroyed.</pre>
 
 <h3>A.2 Nós do cluster</h3>
-<pre>NAME                          STATUS   ROLES    AGE   VERSION               INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                  
-ip-10-0-10-189.ec2.internal   Ready    &lt;none&gt;   84m   v1.36.5-eks-6e7947a   10.0.10.189   &lt;none&gt;        Amazon Linux 2023.12.20261
-ip-10-0-11-89.ec2.internal    Ready    &lt;none&gt;   84m   v1.36.5-eks-6e7947a   10.0.11.89    &lt;none&gt;        Amazon Linux 2023.12.20261</pre>
+<pre>NAME                         STATUS  VERSION              INTERNAL-IP
+ip-10-0-10-189.ec2.internal  Ready   v1.36.5-eks-6e7947a  10.0.10.189
+ip-10-0-11-89.ec2.internal   Ready   v1.36.5-eks-6e7947a  10.0.11.89</pre>
 
 <h3>A.3 Applications do ArgoCD</h3>
 <pre>NAME                 SYNC STATUS   HEALTH STATUS
@@ -615,12 +617,12 @@ raiz                 Synced        Healthy
 targeting-service    Synced        Healthy</pre>
 
 <h3>A.4 External Secrets</h3>
-<pre>NAMESPACE    NAME                        STORETYPE            STORE                 REFRESH INTERVAL   STATUS         READY   LAST SYNC
-analytics    analytics-secrets           ClusterSecretStore   aws-secrets-manager   1m                 SecretSynced   True    37s
-auth         auth-secrets                ClusterSecretStore   aws-secrets-manager   1m                 SecretSynced   True    56s
-evaluation   evaluation-secrets          ClusterSecretStore   aws-secrets-manager   1m                 SecretSynced   True    20s
-flags        flag-service-secrets        ClusterSecretStore   aws-secrets-manager   1m                 SecretSynced   True    54s
-targeting    targeting-service-secrets   ClusterSecretStore   aws-secrets-manager   1m                 SecretSynced   True    54s</pre>
+<pre>NAMESPACE   NAME                       STATUS        READY
+analytics   analytics-secrets          SecretSynced  True
+auth        auth-secrets               SecretSynced  True
+evaluation  evaluation-secrets         SecretSynced  True
+flags       flag-service-secrets       SecretSynced  True
+targeting   targeting-service-secrets  SecretSynced  True</pre>
 
 <h3>A.5 Imagens no ECR (tag = hash do commit)</h3>
 <pre>auth-service: v1.0.0-f0ea038
@@ -651,10 +653,10 @@ baab8be Karlos Rodrigues analytics-service: imagem v1.0.0-4cb3624
    skipped  Atualiza a tag no repositório GitOps
 $ gh run view 41545658425 --log-failed | grep CVE   # Trivy, severidade CRITICAL
 Total: 4 (CRITICAL: 4)
-│ Django  │ CVE-2019-19844 │ CRITICAL │ fixed  │ 3.0               │ 1.11.27, 2.2.9, 3.0.1  │ Django: crafted email addre
-│         │ CVE-2020-7471  │          │        │                   │ 1.11.28, 2.2.10, 3.0.3 │ django: potential SQL injec
-│         │ CVE-2021-35042 │          │        │                   │ 3.2.5, 3.1.13          │ django: potential SQL injec
-│         │ CVE-2025-64459 │          │        │                   │ 5.2.8, 5.1.14, 4.2.26  │ django: Django SQL injectio</pre>
+│ Django  │ CVE-2019-19844 │ CRITICAL │ fixed  │ 3.0               │ 1.11.27, 2.2.9, 3.0.1  │
+│         │ CVE-2020-7471  │          │        │                   │ 1.11.28, 2.2.10, 3.0.3 │
+│         │ CVE-2021-35042 │          │        │                   │ 3.2.5, 3.1.13          │
+│         │ CVE-2025-64459 │          │        │                   │ 5.2.8, 5.1.14, 4.2.26  │</pre>
 
 <!-- ═══════════════════════ APÊNDICE B ═══════════════════════ -->
 <h2 id="apb">Apêndice B — De-para: Requisitos do Enunciado × Entregas</h2>

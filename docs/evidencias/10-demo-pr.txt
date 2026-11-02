@@ -6,7 +6,7 @@ $ gh api .../actions/runs/41545658425/jobs   # resultado: failure
    skipped  Atualiza a tag no repositório GitOps
 $ gh run view 41545658425 --log-failed | grep CVE   # Trivy, severidade CRITICAL
 Total: 4 (CRITICAL: 4)
-│ Django  │ CVE-2019-19844 │ CRITICAL │ fixed  │ 3.0               │ 1.11.27, 2.2.9, 3.0.1  │ Django: crafted email addre
-│         │ CVE-2020-7471  │          │        │                   │ 1.11.28, 2.2.10, 3.0.3 │ django: potential SQL injec
-│         │ CVE-2021-35042 │          │        │                   │ 3.2.5, 3.1.13          │ django: potential SQL injec
-│         │ CVE-2025-64459 │          │        │                   │ 5.2.8, 5.1.14, 4.2.26  │ django: Django SQL injectio
+│ Django  │ CVE-2019-19844 │ CRITICAL │ fixed  │ 3.0               │ 1.11.27, 2.2.9, 3.0.1  │
+│         │ CVE-2020-7471  │          │        │                   │ 1.11.28, 2.2.10, 3.0.3 │
+│         │ CVE-2021-35042 │          │        │                   │ 3.2.5, 3.1.13          │
+│         │ CVE-2025-64459 │          │        │                   │ 5.2.8, 5.1.14, 4.2.26  │
