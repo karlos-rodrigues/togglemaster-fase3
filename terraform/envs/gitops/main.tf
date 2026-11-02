@@ -45,6 +45,19 @@ resource "helm_release" "argocd" {
   version          = "10.11.6"
   namespace        = "argocd"
   create_namespace = true
+
+  values = [yamlencode({
+    configs = {
+      repositories = {
+        gitops = {
+          name          = "togglemaster-gitops"
+          type          = "git"
+          url           = var.repo_gitops
+          sshPrivateKey = var.ssh_private_key
+        }
+      }
+    }
+  })]
 }
 
 resource "helm_release" "raiz" {

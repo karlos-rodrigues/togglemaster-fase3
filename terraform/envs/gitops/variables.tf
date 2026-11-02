@@ -10,5 +10,11 @@ variable "nome" {
 
 variable "repo_gitops" {
   type    = string
-  default = "https://github.com/karlos-rodrigues/togglemaster-gitops.git"
+  default = "git@github.com:karlos-rodrigues/togglemaster-gitops.git"
+}
+
+variable "ssh_private_key" {
+  description = "Deploy key somente leitura do repositório GitOps; definida em terraform.tfvars, fora do Git"
+  type        = string
+  sensitive   = true
 }
