@@ -20,13 +20,14 @@ resource "aws_vpc_security_group_ingress_rule" "redis" {
 }
 
 resource "aws_elasticache_cluster" "this" {
-  cluster_id         = "${var.nome}-evaluation-cache"
-  engine             = "redis"
-  engine_version     = var.versao_engine
-  node_type          = var.classe
-  num_cache_nodes    = 1
-  port               = 6379
-  subnet_group_name  = aws_elasticache_subnet_group.this.name
-  security_group_ids = [aws_security_group.this.id]
-  tags               = var.tags
+  cluster_id               = "${var.nome}-evaluation-cache"
+  engine                   = "redis"
+  engine_version           = var.versao_engine
+  node_type                = var.classe
+  num_cache_nodes          = 1
+  port                     = 6379
+  snapshot_retention_limit = 1
+  subnet_group_name        = aws_elasticache_subnet_group.this.name
+  security_group_ids       = [aws_security_group.this.id]
+  tags                     = var.tags
 }

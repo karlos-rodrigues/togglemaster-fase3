@@ -19,7 +19,7 @@ resource "aws_subnet" "publica" {
   vpc_id                  = aws_vpc.this.id
   cidr_block              = var.cidrs_publicas[count.index]
   availability_zone       = var.zonas[count.index]
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = !var.nat_gateway
   tags = merge(local.tags, {
     Name                                = "${var.nome}-publica-${var.zonas[count.index]}"
     "kubernetes.io/role/elb"            = "1"

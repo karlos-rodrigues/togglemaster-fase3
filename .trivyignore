@@ -1,0 +1,6 @@
+# AWS-0040: endpoint público da API do EKS mantido, restrito por CIDR ao IP da forge (var.cidrs_acesso_api); o deploy é GitOps (ArgoCD dentro do cluster), nenhum runner externo acessa a API
+AWS-0040
+# AWS-0177: ambiente efêmero, criado para validação e destruído com terraform destroy; proteção contra exclusão impediria o destroy
+AWS-0177
+# AWS-0178: VPC Flow Logs geram custo contínuo em CloudWatch e não são exigidos pelo enunciado; avaliar em produção real
+AWS-0178

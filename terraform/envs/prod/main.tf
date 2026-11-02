@@ -21,13 +21,14 @@ module "rede" {
 }
 
 module "eks" {
-  source          = "../../modulos/eks"
-  nome            = var.nome
-  versao_k8s      = var.versao_k8s
-  vpc_id          = module.rede.vpc_id
-  subnets_cluster = concat(module.rede.subnets_publicas, module.rede.subnets_privadas)
-  subnets_nos     = var.nat_gateway ? module.rede.subnets_privadas : module.rede.subnets_publicas
-  tags            = local.tags
+  source           = "../../modulos/eks"
+  nome             = var.nome
+  versao_k8s       = var.versao_k8s
+  vpc_id           = module.rede.vpc_id
+  subnets_cluster  = concat(module.rede.subnets_publicas, module.rede.subnets_privadas)
+  cidrs_acesso_api = var.cidrs_acesso_api
+  subnets_nos      = var.nat_gateway ? module.rede.subnets_privadas : module.rede.subnets_publicas
+  tags             = local.tags
 }
 
 module "rds" {

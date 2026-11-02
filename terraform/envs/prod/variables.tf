@@ -22,3 +22,8 @@ variable "servicos" {
   type    = list(string)
   default = ["auth-service", "flag-service", "targeting-service", "evaluation-service", "analytics-service"]
 }
+
+variable "cidrs_acesso_api" {
+  description = "CIDRs autorizados na API do EKS (IP público da forge /32); definido em terraform.tfvars, fora do Git"
+  type        = list(string)
+}

@@ -23,3 +23,7 @@ variable "tags" {
   type    = map(string)
   default = {}
 }
+variable "cidrs_acesso_api" {
+  description = "CIDRs autorizados a acessar o endpoint público da API do cluster"
+  type        = list(string)
+}

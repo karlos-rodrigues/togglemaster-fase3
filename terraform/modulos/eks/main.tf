@@ -29,6 +29,12 @@ resource "aws_iam_role_policy_attachment" "cluster" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
 }
 
+resource "aws_kms_key" "segredos" {
+  description         = "Criptografia dos secrets do cluster ${var.nome}"
+  enable_key_rotation = true
+  tags                = var.tags
+}
+
 resource "aws_eks_cluster" "this" {
   name     = var.nome
   version  = var.versao_k8s
@@ -38,7 +44,17 @@ resource "aws_eks_cluster" "this" {
     subnet_ids              = var.subnets_cluster
     endpoint_private_access = true
     endpoint_public_access  = true
+    public_access_cidrs     = var.cidrs_acesso_api
   }
+
+  encryption_config {
+    resources = ["secrets"]
+    provider {
+      key_arn = aws_kms_key.segredos.arn
+    }
+  }
+
+  enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   access_config {
     authentication_mode                         = "API"
