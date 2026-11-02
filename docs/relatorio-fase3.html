@@ -229,9 +229,8 @@ nem pipeline de CI executa <code>kubectl</code> contra o cluster.</p>
     <rect x="572" y="358" width="166" height="50" rx="3" fill="#fff" stroke="#d5dae0"/><text x="580" y="377">Secrets Manager</text><text x="580" y="392" font-size="8.5" fill="#5f6873">senhas e chaves dos serviços</text>
   </g>
   <line x1="685" y1="140" x2="480" y2="204" stroke="#5f6873" stroke-width="1.4" marker-end="url(#seta)" stroke-dasharray="4 3"/>
-  <text x="560" y="168" font-size="8.5" fill="#5f6873">ArgoCD observa</text>
+  <text x="440" y="162" font-size="8.5" fill="#5f6873">ArgoCD observa</text>
   <line x1="530" y1="290" x2="558" y2="290" stroke="#5f6873" stroke-width="1.4" marker-end="url(#seta)"/>
-  <line x1="190" y1="140" x2="190" y2="173" stroke="#d5dae0" stroke-width="1" />
 </svg>
 </div>
 <p class="cap">Figura 1 — Visão geral da solução: do commit no GitHub ao Pod no EKS, passando pelo CI de segurança,
@@ -391,12 +390,20 @@ pipeline de primeira, e esse caminho está contado nas Seções 8.1 a 8.4. A Tab
 </table>
 <p class="cap">Tabela 7 — Cronologia real das execuções do CI em 02/11/2026.</p>
 
-<div class="box pendente">
-  <b>Demonstração gravada do bloqueio de segurança</b>
-  O bloqueio do CVE da stdlib aconteceu de verdade, mas o enunciado pede que eu insira uma falha de
-  propósito no vídeo (uma dependência vulnerável), mostre o pipeline falhando no passo de segurança e depois
-  corrija. Essa demonstração faz parte da gravação e o link do vídeo consta na Seção 9.
-</div>
+<h3>4.3 Demonstração do bloqueio de segurança (Pull Request nº 1)</h3>
+<p>Para o vídeo fiz o que o enunciado pede: abri um Pull Request no <code>flag-service</code> acrescentando
+<code>Django==3.0</code>, uma dependência com vulnerabilidades conhecidas, e deixei o pipeline rodar de verdade.
+A Tabela 8 resume o que aconteceu.</p>
+
+<table>
+<tr><th>Passo</th><th>Resultado</th></tr>
+<tr><td>Commit com <code>Django==3.0</code></td><td>o job <b>Segurança (SCA e SAST)</b> <span class="pend">falhou</span>: o Trivy listou 4 vulnerabilidades <b>CRITICAL</b> (CVE-2019-19844, CVE-2020-7471, CVE-2021-35042 e CVE-2025-64459); os jobs de imagem e de GitOps ficaram em <i>skipped</i></td></tr>
+<tr><td>Commit de correção (revert)</td><td>os jobs de build, linter e segurança passaram, a imagem foi construída e varrida; sem push ao ECR, porque é um Pull Request</td></tr>
+<tr><td>Merge na <code>main</code></td><td>pipeline completo: imagem <code>v1.0.0-e238cde</code> no ECR e commit de tag no repositório GitOps</td></tr>
+<tr><td>ArgoCD</td><td>detectou o commit sozinho e aplicou o rollout; a nova revisão aparece no histórico da Application (id 3, 23:35:51 UTC)</td></tr>
+</table>
+<p class="cap">Tabela 8 — Demonstração real do bloqueio de segurança e do ciclo até o cluster, em 02/11/2026
+(a saída completa está no Apêndice A.8).</p>
 
 <!-- ═══════════════════════ 5 ═══════════════════════ -->
 <h2 id="s5">5. GitOps com ArgoCD</h2>
@@ -421,7 +428,7 @@ alteração feita à mão no cluster é revertida; o Git é a única fonte de ve
 <tr><td><code>ingress-nginx</code>, <code>metrics-server</code></td><td>charts Helm oficiais, versões fixadas</td><td class="c"><span class="ok">Synced / Healthy</span></td></tr>
 <tr><td><code>raiz</code></td><td>repositório GitOps, <code>argocd/</code></td><td class="c"><span class="ok">Synced / Healthy</span></td></tr>
 </table>
-<p class="cap">Tabela 8 — Applications gerenciadas pelo ArgoCD (saída real de <code>kubectl get applications</code> no Apêndice A).</p>
+<p class="cap">Tabela 9 — Applications gerenciadas pelo ArgoCD (saída real de <code>kubectl get applications</code> no Apêndice A).</p>
 
 <h3>5.3 Atualização automática da tag</h3>
 <p>Ao fim do pipeline, o job <code>gitops</code> clona o repositório de manifestos, troca a tag da imagem no
@@ -435,12 +442,15 @@ porque a tag provisória <code>v0.0.0-inicial</code> não existia no ECR, foram 
 a configuração funciona igual com o repositório público ou privado, e fechá-lo no final não exige mudar nada
 no cluster.</p>
 
-<div class="box pendente">
-  <b>Interface do ArgoCD</b>
-  O enunciado pede a demonstração da interface gerenciando os 5 microsserviços. A captura da tela do ArgoCD
-  (Applications, árvore de recursos e a sincronização após uma mudança de tag) é feita durante a gravação do
-  vídeo; a Tabela 8 traz o mesmo estado em texto.
-</div>
+<h3>5.5 Interface do ArgoCD</h3>
+<p>As Figuras 3 e 4 são capturas reais da interface do ArgoCD, tiradas depois do deploy da demonstração. A
+primeira mostra as nove Applications <code>Synced</code> e <code>Healthy</code>, entre elas os cinco
+microsserviços; a segunda mostra a árvore de recursos do <code>flag-service</code>, com o ExternalSecret, o Job de
+migração do schema e o ReplicaSet novo.</p>
+<div class="fig"><img src="figuras/argocd-applications.png" alt="ArgoCD, lista de Applications"></div>
+<p class="cap">Figura 3 — Interface do ArgoCD: as Applications gerenciadas, todas Synced e Healthy.</p>
+<div class="fig"><img src="figuras/argocd-flag-service.png" alt="ArgoCD, árvore do flag-service"></div>
+<p class="cap">Figura 4 — Interface do ArgoCD: árvore de recursos do flag-service sincronizada a partir do repositório GitOps.</p>
 
 <!-- ═══════════════════════ 6 ═══════════════════════ -->
 <h2 id="s6">6. Segredos e Segurança</h2>
@@ -470,7 +480,7 @@ usa OIDC e os repositórios do ECR têm tags imutáveis e scan no push.</p>
 <tr><td>Avaliação de 8 usuários</td><td>7 resultados <code>true</code> e 1 <code>false</code>; o resultado é determinístico por <code>user_id</code> e <code>flag_name</code></td></tr>
 <tr><td>Fluxo assíncrono</td><td>8 eventos publicados no SQS e <b>8 itens</b> na tabela <code>ToggleMasterAnalytics</code></td></tr>
 </table>
-<p class="cap">Tabela 9 — Validação funcional do ambiente criado pelo Terraform e entregue pelo ArgoCD.</p>
+<p class="cap">Tabela 10 — Validação funcional do ambiente criado pelo Terraform e entregue pelo ArgoCD.</p>
 
 <!-- ═══════════════════════ 8 ═══════════════════════ -->
 <h2 id="s8">8. Desafios e Decisões Técnicas</h2>
@@ -559,6 +569,7 @@ chegasse ao cluster.</p>
   <li>O endpoint público da API do EKS continua ligado, restrito ao IP da VM de trabalho; a alternativa seria VPN ou bastião.</li>
   <li>O SAST bloqueia em severidade alta, porque as ferramentas escolhidas não têm nível crítico.</li>
   <li>O bootstrap da chave de serviço é um passo manual documentado.</li>
+  <li>O vídeo não tem narração: as falas aparecem como texto na tela, como no vídeo da demonstração da Fase 2.</li>
 </ul>
 
 <h3>9.2 Links</h3>
@@ -567,9 +578,9 @@ chegasse ao cluster.</p>
 <tr><td>Código Terraform, workflows-modelo e documentação</td><td><code>https://github.com/karlos-rodrigues/togglemaster-fase3</code></td></tr>
 <tr><td>Manifestos GitOps</td><td><code>https://github.com/karlos-rodrigues/togglemaster-gitops</code></td></tr>
 <tr><td>Serviços com o workflow de CI</td><td><code>https://github.com/karlos-rodrigues/{auth,flag,targeting,evaluation,analytics}-service</code></td></tr>
-<tr><td>Vídeo de demonstração (até 20 min)</td><td class="pend">link a incluir após a gravação</td></tr>
+<tr><td>Vídeo de demonstração (até 20 min)</td><td style="word-break:break-all"><code>https://github.com/karlos-rodrigues/togglemaster-fase3/blob/main/docs/TC-fase3-video-completo.mp4</code> (7 min 16 s, 1080p, sem narração; as falas aparecem como legenda na tela)</td></tr>
 </table>
-<p class="cap">Tabela 10 — Repositórios e vídeo da entrega.</p>
+<p class="cap">Tabela 11 — Repositórios e vídeo da entrega.</p>
 
 <!-- ═══════════════════════ APÊNDICE A ═══════════════════════ -->
 <h2 id="apa">Apêndice A — Evidências de Execução</h2>
@@ -631,6 +642,20 @@ baab8be Karlos Rodrigues analytics-service: imagem v1.0.0-4cb3624
 <h3>A.7 Itens gravados pelo analytics-service</h3>
 <pre>itens DynamoDB: 8</pre>
 
+<h3>A.8 Demonstração do bloqueio de segurança (Pull Request nº 1 do flag-service)</h3>
+<pre>$ gh api .../actions/runs/41545658425/jobs   # resultado: failure
+   success  Linter
+   failure  Segurança (SCA e SAST)
+   success  Build e testes unitários
+   skipped  Docker build, scan e push
+   skipped  Atualiza a tag no repositório GitOps
+$ gh run view 41545658425 --log-failed | grep CVE   # Trivy, severidade CRITICAL
+Total: 4 (CRITICAL: 4)
+│ Django  │ CVE-2019-19844 │ CRITICAL │ fixed  │ 3.0               │ 1.11.27, 2.2.9, 3.0.1  │ Django: crafted email addre
+│         │ CVE-2020-7471  │          │        │                   │ 1.11.28, 2.2.10, 3.0.3 │ django: potential SQL injec
+│         │ CVE-2021-35042 │          │        │                   │ 3.2.5, 3.1.13          │ django: potential SQL injec
+│         │ CVE-2025-64459 │          │        │                   │ 5.2.8, 5.1.14, 4.2.26  │ django: Django SQL injectio</pre>
+
 <!-- ═══════════════════════ APÊNDICE B ═══════════════════════ -->
 <h2 id="apb">Apêndice B — De-para: Requisitos do Enunciado × Entregas</h2>
 <table class="longa">
@@ -650,13 +675,13 @@ baab8be Karlos Rodrigues analytics-service: imagem v1.0.0-4cb3624
 <tr><td>ArgoCD instalado no EKS</td><td>Helm pelo Terraform</td><td class="c"><span class="ok">Feito</span></td></tr>
 <tr><td>CI atualiza a tag da imagem no GitOps</td><td>job <code>gitops</code> do workflow</td><td class="c"><span class="ok">Feito</span></td></tr>
 <tr><td>ArgoCD sincroniza automaticamente</td><td>auto-sync, prune e selfHeal</td><td class="c"><span class="ok">Feito</span></td></tr>
-<tr><td>Interface do ArgoCD gerenciando os 5 serviços</td><td>captura durante a gravação</td><td class="c"><span class="pend">Pendente (vídeo)</span></td></tr>
-<tr><td>Vídeo de demonstração (até 20 min)</td><td>roteiro e ambiente prontos</td><td class="c"><span class="pend">Pendente</span></td></tr>
+<tr><td>Interface do ArgoCD gerenciando os 5 serviços</td><td>Figuras 3 e 4 e telas no vídeo</td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>Vídeo de demonstração (até 20 min)</td><td>TC-fase3-video-completo.mp4 (7 min 16 s, sem narração)</td><td class="c"><span class="ok">Feito</span></td></tr>
 <tr><td>Código no repositório</td><td>Terraform, workflows e manifestos publicados</td><td class="c"><span class="ok">Feito</span></td></tr>
 <tr><td>Relatório: participantes, links, desafios e decisões</td><td>este documento</td><td class="c"><span class="ok">Feito</span></td></tr>
 <tr><td>Print da estimativa de custos AWS</td><td>Tabela 5 e Figura 2</td><td class="c"><span class="ok">Feito</span></td></tr>
 </table>
-<p class="cap">Tabela 11 — Cobertura dos requisitos do enunciado da Fase 3.</p>
+<p class="cap">Tabela 12 — Cobertura dos requisitos do enunciado da Fase 3.</p>
 
 </body>
 </html>
