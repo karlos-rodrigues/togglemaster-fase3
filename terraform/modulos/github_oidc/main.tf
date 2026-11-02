@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "confianca" {
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = [for r in var.repositorios : "repo:${var.dono_github}/${r}:ref:refs/heads/main"]
+      values   = [for nome, id in var.repositorios : "repo:${var.dono_github}@${var.dono_id}/${nome}@${id}:ref:refs/heads/main"]
     }
   }
 }

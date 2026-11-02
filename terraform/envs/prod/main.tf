@@ -115,7 +115,8 @@ module "github_oidc" {
   source       = "../../modulos/github_oidc"
   nome         = "${var.nome}-github-ci"
   dono_github  = "karlos-rodrigues"
-  repositorios = var.servicos
+  dono_id      = var.dono_github_id
+  repositorios = var.repositorios_github
   ecr_arns     = values(module.ecr.arns)
   tags         = local.tags
 }
