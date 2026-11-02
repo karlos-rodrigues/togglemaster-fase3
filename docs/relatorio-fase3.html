@@ -667,7 +667,7 @@ Total: 4 (CRITICAL: 4)
 <tr><td>1 fila SQS e 5 repositórios ECR</td><td>módulos <code>sqs</code> e <code>ecr</code></td><td class="c"><span class="ok">Feito</span></td></tr>
 <tr><td>Estado remoto em S3 (e <code>use_lockfile</code>)</td><td>backend S3 com lockfile, versionado e criptografado</td><td class="c"><span class="ok">Feito</span></td></tr>
 <tr><td>Workflow de CI para cada um dos 5 serviços, em PR e push na main</td><td>5 arquivos <code>ci.yml</code></td><td class="c"><span class="ok">Feito</span></td></tr>
-<tr><td>Build e testes unitários</td><td>build, vet e test (Go); compileall e pytest (Python)</td><td class="c"><span class="parcial">Parcial</span> — os repositórios não têm testes</td></tr>
+<tr><td>Build e testes unitários</td><td>build, vet e test (Go); compileall e pytest (Python)</td><td class="c"><span class="ok">Feito</span> — o enunciado diz "se houver"; os repositórios não têm testes</td></tr>
 <tr><td>Linter / análise estática</td><td>golangci-lint e flake8</td><td class="c"><span class="ok">Feito</span></td></tr>
 <tr><td>SCA e SAST, com bloqueio em CRITICAL</td><td>Trivy fs; gosec e bandit</td><td class="c"><span class="ok">Feito</span> — SAST bloqueia em alta severidade</td></tr>
 <tr><td>Docker build, scan, login no ECR e push com hash do commit</td><td>job de imagem com Trivy e OIDC</td><td class="c"><span class="ok">Feito</span></td></tr>

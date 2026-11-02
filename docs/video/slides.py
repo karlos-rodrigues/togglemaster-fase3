@@ -61,13 +61,21 @@ def desenha_linha(d, x, y, linha, largura_max):
     return y + 54
 
 
+def titulo_ajustado(texto, maximo=W - 200):
+    for tam in range(72, 39, -2):
+        fonte = ImageFont.truetype(D + "DejaVuSans-Bold.ttf", tam)
+        if fonte.getlength(texto) <= maximo:
+            return fonte
+    return fonte
+
+
 def slide(secao, titulo, itens, rodape=None):
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
     barra(d)
     if secao:
         d.text((100, 78), secao, font=F_SUB, fill=SUAVE)
-    d.text((100, 128), titulo, font=F_TIT, fill=BRANCO)
+    d.text((100, 128), titulo, font=titulo_ajustado(titulo), fill=BRANCO)
     y = 290
     for item in itens:
         d.polygon([(100, y + 12), (100, y + 38), (122, y + 25)], fill=LARANJA)
