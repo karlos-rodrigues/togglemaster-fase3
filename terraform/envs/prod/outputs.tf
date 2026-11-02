@@ -1,11 +1,11 @@
-output "vpc_id" {
-  value = module.rede.vpc_id
-}
-
-output "subnets_publicas" {
-  value = module.rede.subnets_publicas
-}
-
-output "subnets_privadas" {
-  value = module.rede.subnets_privadas
-}
+output "vpc_id" { value = module.rede.vpc_id }
+output "cluster" { value = module.eks.nome }
+output "cluster_endpoint" { value = module.eks.endpoint }
+output "rds_enderecos" { value = module.rds.enderecos }
+output "rds_segredos_arn" { value = module.rds.segredos_arn }
+output "redis_endpoint" { value = module.elasticache.endpoint }
+output "dynamodb_tabela" { value = module.dynamodb.nome }
+output "sqs_url" { value = module.sqs.url }
+output "ecr_urls" { value = module.ecr.urls }
+output "irsa_evaluation_arn" { value = module.irsa_evaluation.role_arn }
+output "irsa_analytics_arn" { value = module.irsa_analytics.role_arn }
