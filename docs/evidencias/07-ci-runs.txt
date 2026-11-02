@@ -1,0 +1,14 @@
+auth-service 21:10 success build: Go 1.25 no estágio de build (CVE-2025-68121 na stdlib 1.21, ba… https://github.com/karlos-rodrigues/auth-service/actions/runs/41525863613
+auth-service 20:58 failure ci: gosec precisa de Go recente; job de segurança usa Go estável https://github.com/karlos-rodrigues/auth-service/actions/runs/41523994558
+auth-service 20:56 failure ci: corrige a condição de push do workflow https://github.com/karlos-rodrigues/auth-service/actions/runs/41523751376
+auth-service 20:52 failure ci: pipeline DevSecOps (build, lint, SCA, SAST, scan de imagem, ECR, … https://github.com/karlos-rodrigues/auth-service/actions/runs/41523128356
+flag-service 20:56 success ci: corrige a condição de push do workflow https://github.com/karlos-rodrigues/flag-service/actions/runs/41523755566
+flag-service 20:52 failure ci: pipeline DevSecOps (build, lint, SCA, SAST, scan de imagem, ECR, … https://github.com/karlos-rodrigues/flag-service/actions/runs/41523146876
+targeting-service 20:56 success ci: corrige a condição de push do workflow https://github.com/karlos-rodrigues/targeting-service/actions/runs/41523759247
+targeting-service 20:52 failure ci: pipeline DevSecOps (build, lint, SCA, SAST, scan de imagem, ECR, … https://github.com/karlos-rodrigues/targeting-service/actions/runs/41523154103
+evaluation-service 21:10 success build: Go 1.25 no estágio de build (CVE-2025-68121 na stdlib 1.21, ba… https://github.com/karlos-rodrigues/evaluation-service/actions/runs/41525869646
+evaluation-service 20:58 failure ci: gosec precisa de Go recente; job de segurança usa Go estável https://github.com/karlos-rodrigues/evaluation-service/actions/runs/41524001036
+evaluation-service 20:56 failure ci: corrige a condição de push do workflow https://github.com/karlos-rodrigues/evaluation-service/actions/runs/41523763399
+evaluation-service 20:52 failure ci: pipeline DevSecOps (build, lint, SCA, SAST, scan de imagem, ECR, … https://github.com/karlos-rodrigues/evaluation-service/actions/runs/41523139406
+analytics-service 20:56 success ci: corrige a condição de push do workflow https://github.com/karlos-rodrigues/analytics-service/actions/runs/41523768800
+analytics-service 20:52 failure ci: pipeline DevSecOps (build, lint, SCA, SAST, scan de imagem, ECR, … https://github.com/karlos-rodrigues/analytics-service/actions/runs/41523118482

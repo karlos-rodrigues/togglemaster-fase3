@@ -1,0 +1,8 @@
+b4cef97 Karlos Rodrigues gitops: Jobs de migração do schema (hook do ArgoCD) para auth, flag e targeting
+54584cc Karlos Rodrigues evaluation-service: imagem v1.0.0-bf0203d
+f9ab1e1 Karlos Rodrigues auth-service: imagem v1.0.0-f0ea038
+baab8be Karlos Rodrigues analytics-service: imagem v1.0.0-4cb3624
+66d761a Karlos Rodrigues targeting-service: imagem v1.0.0-8f84190
+5d96d1f Karlos Rodrigues flag-service: imagem v1.0.0-e4dcb55
+59de0ee Karlos Rodrigues argocd: acesso ao repositório privado por SSH
+14c7564 Karlos Rodrigues gitops: manifestos dos 5 serviços, base e Applications do ArgoCD

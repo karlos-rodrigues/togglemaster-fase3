@@ -1,0 +1,10 @@
+NAME                 SYNC STATUS   HEALTH STATUS
+analytics-service    Synced        Healthy
+auth-service         Synced        Healthy
+base                 Synced        Healthy
+evaluation-service   Synced        Healthy
+flag-service         Synced        Healthy
+ingress-nginx        Synced        Healthy
+metrics-server       Synced        Healthy
+raiz                 Synced        Healthy
+targeting-service    Synced        Healthy

@@ -1,0 +1,9 @@
+# terraform prod: início 2026-11-02T20:42:27Z, fim 2026-11-02T20:54:28Z
+Plan: 71 to add, 0 to change, 0 to destroy.
+Apply complete! Resources: 71 added, 0 changed, 0 destroyed.
+
+# terraform gitops
+helm_release.external_secrets: Creation complete after 1m5s [id=external-secrets]
+helm_release.argocd: Creation complete after 1m35s [id=argocd]
+helm_release.raiz: Creation complete after 4s [id=togglemaster-raiz]
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.

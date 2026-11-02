@@ -1,0 +1,5 @@
+auth-service: v1.0.0-f0ea038
+flag-service: v1.0.0-e4dcb55
+targeting-service: v1.0.0-8f84190
+evaluation-service: v1.0.0-bf0203d
+analytics-service: v1.0.0-4cb3624

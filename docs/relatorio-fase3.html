@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Relatório de Entrega — Tech Challenge Fase 3 — ToggleMaster</title>
+<style>
+  @page {
+    size: A4;
+    margin: 2.3cm 2cm 1.9cm;
+    @top-left  { content: "ToggleMaster — Tech Challenge Fase 3";
+                 font-family: "DejaVu Sans", sans-serif; font-size: 7.6pt; color: #6b7580; }
+    @top-right { content: "Relatório de Entrega";
+                 font-family: "DejaVu Sans", sans-serif; font-size: 7.6pt; color: #6b7580; }
+    @bottom-center { content: counter(page);
+                 font-family: "DejaVu Sans", sans-serif; font-size: 8.5pt; color: #6b7580; }
+  }
+  @page :first {
+    @top-left { content: none } @top-right { content: none } @bottom-center { content: none }
+  }
+
+  :root{ --tinta:#16191d; --suave:#5f6873; --linha:#d5dae0; --fundo:#f5f7f9;
+         --ok:#0f7b3f; --parcial:#a8690b; --pend:#7c3aed; --alerta:#b3261e; }
+
+  body{ font-family:"DejaVu Sans","Liberation Sans",sans-serif; color:var(--tinta);
+        font-size:10.2pt; line-height:1.55; margin:0; }
+  h1{ font-size:17pt; line-height:1.3; margin:0 0 6px; font-weight:700 }
+  h2{ font-size:12.5pt; margin:22px 0 8px; padding-bottom:4px;
+      border-bottom:1.6pt solid var(--tinta); break-after:avoid }
+  h3{ font-size:10.8pt; margin:15px 0 5px; color:#242c35; break-after:avoid }
+  p{ margin:0 0 8px; text-align:justify }
+  ul,ol{ margin:0 0 9px; padding-left:18px } li{ margin-bottom:4px }
+
+  table{ width:100%; border-collapse:collapse; margin:9px 0 6px; font-size:9.2pt;
+         break-inside:avoid }
+  th,td{ border:0.6pt solid var(--linha); padding:5px 7px; vertical-align:top; text-align:left }
+  th{ background:var(--fundo); font-weight:700 }
+  td.c,th.c{ text-align:center; white-space:nowrap }
+
+  code{ font-family:"DejaVu Sans Mono",monospace; font-size:8.6pt;
+        background:var(--fundo); padding:0 3px; border-radius:2px }
+  pre{ background:var(--fundo); border:0.6pt solid var(--linha); border-left:2.5pt solid var(--suave);
+       padding:8px 10px; font-family:"DejaVu Sans Mono",monospace; font-size:8pt;
+       line-height:1.42; margin:8px 0 10px; white-space:pre-wrap; break-inside:avoid }
+
+  .box{ border:0.6pt solid var(--linha); border-left:3pt solid var(--tinta);
+        background:var(--fundo); padding:8px 11px; margin:10px 0; font-size:9.4pt;
+        break-inside:avoid }
+  .box > b:first-child{ display:block; margin-bottom:2px }
+  .box.pendente{ border-left-color:var(--pend); background:#f8f5ff }
+  .box.alerta{ border-left-color:var(--alerta); background:#fdf4f3 }
+
+  .ok{ color:var(--ok); font-weight:700 }
+  .parcial{ color:var(--parcial); font-weight:700 }
+  .pend{ color:var(--pend); font-weight:700 }
+
+  .cap{ font-size:8.6pt; color:var(--suave); margin:2px 0 13px; text-align:left }
+  .fig{ margin:9px 0 3px; text-align:center }
+  .fig img{ max-width:100%; border-radius:4px }
+
+  /* ---------- capa ---------- */
+  .capa{ height:24.2cm; display:flex; flex-direction:column; page-break-after:always }
+  .capa .inst{ text-align:center; font-size:11pt; line-height:1.5; margin-bottom:1.2cm }
+  .capa .inst b{ font-size:11.5pt }
+  .capa .meio{ flex:1; display:flex; flex-direction:column; justify-content:center; text-align:center }
+  .capa .titulo{ font-size:18pt; font-weight:700; line-height:1.35; margin-bottom:10px }
+  .capa .subtitulo{ font-size:11.5pt; color:var(--suave); margin-bottom:4.2cm }
+  .capa .autores{ font-size:10.5pt; line-height:1.9 }
+  .capa .local{ text-align:center; font-size:11pt; margin-top:1.2cm }
+
+  /* ---------- sumário ---------- */
+  .sumario{ page-break-after:always }
+  .sumario ol{ list-style:none; padding:0; margin:14px 0 0; font-size:10.2pt }
+  .sumario li{ margin-bottom:7px }
+  .sumario a{ color:var(--tinta); text-decoration:none }
+  .sumario a::after{ content: " " leader('.') " " target-counter(attr(href), page); color:var(--suave) }
+</style>
+</head>
+<body>
+<!-- ═══════════════════════ CAPA ═══════════════════════ -->
+<div class="capa">
+  <div class="inst">
+    <b>FIAP — Faculdade de Informática e Administração Paulista</b><br>
+    DevOps e Arquitetura Cloud
+  </div>
+  <div class="meio">
+    <div class="titulo">ToggleMaster: Infraestrutura como Código,<br>
+      DevSecOps e GitOps na AWS</div>
+    <div class="subtitulo">Relatório de Entrega — Tech Challenge Fase 3</div>
+    <div class="autores">
+      Karlos Rodrigues — RM 374567 —
+      Discord: karlos.rodrigues
+    </div>
+  </div>
+  <div class="local">São Paulo — 2026</div>
+</div>
+
+<!-- ═══════════════════════ SUMÁRIO ═══════════════════════ -->
+<div class="sumario">
+  <h2>Sumário</h2>
+  <ol>
+    <li><a href="#s1">1. Introdução e Contexto do Projeto</a></li>
+    <li><a href="#s2">2. Arquitetura da Solução</a></li>
+    <li><a href="#s3">3. Infraestrutura como Código com Terraform</a></li>
+    <li><a href="#s4">4. Pipeline de CI e DevSecOps</a></li>
+    <li><a href="#s5">5. GitOps com ArgoCD</a></li>
+    <li><a href="#s6">6. Segredos e Segurança</a></li>
+    <li><a href="#s7">7. Validação do Ambiente</a></li>
+    <li><a href="#s8">8. Desafios e Decisões Técnicas</a></li>
+    <li><a href="#s9">9. Considerações Finais e Links do Projeto</a></li>
+    <li><a href="#apa">Apêndice A — Evidências de Execução</a></li>
+    <li><a href="#apb">Apêndice B — De-para: Requisitos do Enunciado × Entregas</a></li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════ 1 ═══════════════════════ -->
+<h2 id="s1">1. Introdução e Contexto do Projeto</h2>
+<p>Na Fase 2, levei o ToggleMaster para Kubernetes: cinco microsserviços conteinerizados num cluster EKS,
+com RDS, ElastiCache, SQS e DynamoDB por trás. A arquitetura foi aprovada, mas o enunciado da Fase 3 descreve
+o preço que se paga por operar tudo à mão: os desenvolvedores rodam <code>kubectl apply</code> das próprias
+máquinas e geram conflitos de versão; as credenciais do banco circulam em arquivos de texto; uma
+vulnerabilidade numa biblioteca Go passou despercebida e foi para produção; e recriar o ambiente de
+homologação leva dias porque foi montado no console.</p>
+
+<p>A ordem da DevOps Solutions Inc. — o cenário que o enunciado propõe — é "se não está no código, não
+existe". Meu trabalho nesta fase foi trocar cada uma dessas quatro dores por uma prática automatizada:
+a infraestrutura passou a ser <b>Terraform</b>, cada serviço ganhou um <b>pipeline de CI com varreduras de
+segurança</b> que bloqueia vulnerabilidade crítica, o deploy deixou de ser um comando executado por pessoas e
+virou <b>GitOps com ArgoCD</b>, e as credenciais saíram dos arquivos para o <b>AWS Secrets Manager</b>.</p>
+
+<div class="box">
+  Segui a Opção B do enunciado — conta pessoal AWS. Por isso o Terraform cria as próprias roles de IAM
+  (cluster, nós, IRSA e a role do GitHub Actions) em vez de depender da <code>LabRole</code> do AWS Academy.
+</div>
+
+<h3>1.1 Ambiente de desenvolvimento e o que muda entre a minha VM e a AWS</h3>
+<p>Para não misturar o trabalho com a minha estação pessoal, desenvolvi tudo na mesma VM isolada da Fase 2
+(<code>forge</code>, Ubuntu 24.04 sobre KVM), onde instalei Terraform, Trivy, GitHub CLI, Go, golangci-lint,
+gosec, flake8 e bandit. O processo é o mesmo em qualquer destino: escrevo os módulos e rodo
+<code>init</code>, <code>fmt</code>, <code>validate</code>, <code>plan</code> e <code>apply</code>. O que muda é só o
+provider e o backend, não o código.</p>
+
+<p>Eu poderia ter criado toda a infraestrutura na AWS desde o primeiro dia, mas ela é cara para ficar ligada
+(estimativa na Seção 3.6). Por isso mantive o ambiente desligado durante o desenvolvimento e o subi apenas
+para validar e gravar. Mas "o processo é o mesmo" não quer dizer que o resultado tenha o mesmo valor, e
+a Tabela 1 separa o que dá para provar fora da AWS do que não dá.</p>
+
+<table>
+<tr><th>Etapa</th><th>Na VM, sem criar recursos</th><th>Na AWS</th></tr>
+<tr><td><code>init</code>, <code>fmt</code>, <code>validate</code></td><td>idêntico</td><td>idêntico</td></tr>
+<tr><td><code>plan</code></td><td>exige credencial, mas não cria nada e não gera custo</td><td>mostra o que seria criado com as regras reais da conta</td></tr>
+<tr><td><code>apply</code> da rede (VPC, sub-redes, IGW, route tables)</td><td>sem custo na AWS, esses recursos não são cobrados</td><td>idêntico</td></tr>
+<tr><td><code>apply</code> de EKS, RDS e ElastiCache</td><td>não dá para reproduzir: o emulador LocalStack só cobre EKS, RDS, ElastiCache e ECR nos planos pagos</td><td>cobrado por hora; subo, valido, gravo e destruo</td></tr>
+</table>
+<p class="cap">Tabela 1 — O que o fluxo de trabalho no Terraform prova fora da AWS e o que só a AWS real prova
+(fonte: docs.localstack.cloud/aws/licensing).</p>
+
+<p>Resumindo: o fluxo e o código são os mesmos, mas um emulador não substitui a prova de que a infraestrutura
+real sobe — IAM, cotas e tempo de criação do EKS e do RDS só aparecem na AWS. Por isso a evidência desta
+entrega vem de um <code>apply</code> real, de curta duração, seguido de <code>destroy</code>.</p>
+
+<!-- ═══════════════════════ 2 ═══════════════════════ -->
+<h2 id="s2">2. Arquitetura da Solução</h2>
+<p>Organizei a solução em quatro camadas, cada uma versionada em Git: o <b>Terraform</b> cria a infraestrutura;
+o <b>GitHub Actions</b> constrói, varre e publica as imagens; o <b>repositório GitOps</b> guarda o estado
+desejado do cluster; e o <b>ArgoCD</b>, dentro do EKS, reconcilia o cluster com esse repositório. Nenhuma pessoa
+nem pipeline de CI executa <code>kubectl</code> contra o cluster.</p>
+
+<div class="fig">
+<svg viewBox="0 0 760 430" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DejaVu Sans, sans-serif">
+  <defs><marker id="seta" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 z" fill="#5f6873"/></marker></defs>
+  <!-- Terraform -->
+  <rect x="10" y="12" width="740" height="40" rx="5" fill="#f5f7f9" stroke="#16191d"/>
+  <text x="22" y="30" font-size="11" font-weight="700">Terraform (módulos) + estado remoto S3 com lockfile</text>
+  <text x="22" y="45" font-size="9" fill="#5f6873">rede · EKS · 3 RDS · ElastiCache · DynamoDB · SQS · 5 ECR · Secrets Manager · IRSA · OIDC do GitHub · ArgoCD e External Secrets (Helm)</text>
+  <!-- CI -->
+  <rect x="10" y="78" width="160" height="62" rx="5" fill="#fff" stroke="#16191d"/>
+  <text x="20" y="96" font-size="10.5" font-weight="700">GitHub (5 repos)</text>
+  <text x="20" y="112" font-size="9" fill="#5f6873">push na main / PR</text>
+  <text x="20" y="126" font-size="9" fill="#5f6873">um workflow por serviço</text>
+  <rect x="205" y="78" width="215" height="62" rx="5" fill="#fff" stroke="#16191d"/>
+  <text x="215" y="96" font-size="10.5" font-weight="700">GitHub Actions (DevSecOps)</text>
+  <text x="215" y="111" font-size="9" fill="#5f6873">build+teste · lint · SCA+SAST</text>
+  <text x="215" y="125" font-size="9" fill="#5f6873">scan da imagem · bloqueia CRITICAL</text>
+  <rect x="455" y="78" width="130" height="62" rx="5" fill="#fff" stroke="#16191d"/>
+  <text x="465" y="96" font-size="10.5" font-weight="700">Amazon ECR</text>
+  <text x="465" y="112" font-size="9" fill="#5f6873">tag v1.0.0-hash</text>
+  <text x="465" y="126" font-size="9" fill="#5f6873">via OIDC, sem chave</text>
+  <rect x="620" y="78" width="130" height="62" rx="5" fill="#fff" stroke="#16191d"/>
+  <text x="630" y="96" font-size="10.5" font-weight="700">Repo GitOps</text>
+  <text x="630" y="112" font-size="9" fill="#5f6873">CI troca a tag da</text>
+  <text x="630" y="126" font-size="9" fill="#5f6873">imagem no deployment</text>
+  <line x1="170" y1="109" x2="203" y2="109" stroke="#5f6873" stroke-width="1.4" marker-end="url(#seta)"/>
+  <line x1="420" y1="109" x2="453" y2="109" stroke="#5f6873" stroke-width="1.4" marker-end="url(#seta)"/>
+  <line x1="585" y1="109" x2="618" y2="109" stroke="#5f6873" stroke-width="1.4" marker-end="url(#seta)"/>
+  <!-- EKS -->
+  <rect x="10" y="175" width="520" height="245" rx="6" fill="#fafbfc" stroke="#16191d" stroke-width="1.4"/>
+  <text x="22" y="194" font-size="11" font-weight="700">Cluster Amazon EKS 1.36 (2 nós t3.medium)</text>
+  <rect x="24" y="206" width="494" height="44" rx="4" fill="#fff" stroke="#16191d"/>
+  <text x="34" y="224" font-size="10" font-weight="700">ArgoCD (app-of-apps, auto-sync, prune, selfHeal)</text>
+  <text x="34" y="240" font-size="9" fill="#5f6873">lê o repo GitOps por deploy key SSH e aplica no cluster</text>
+  <rect x="24" y="262" width="494" height="86" rx="4" fill="#fff" stroke="#5f6873"/>
+  <text x="34" y="279" font-size="10" font-weight="700">5 namespaces, um por microsserviço</text>
+  <g font-size="9" fill="#16191d">
+    <rect x="34" y="290" width="88" height="22" rx="3" fill="#f5f7f9" stroke="#d5dae0"/><text x="40" y="305">auth (Go)</text>
+    <rect x="128" y="290" width="88" height="22" rx="3" fill="#f5f7f9" stroke="#d5dae0"/><text x="134" y="305">flag (Py)</text>
+    <rect x="222" y="290" width="100" height="22" rx="3" fill="#f5f7f9" stroke="#d5dae0"/><text x="228" y="305">targeting (Py)</text>
+    <rect x="328" y="290" width="100" height="22" rx="3" fill="#f5f7f9" stroke="#d5dae0"/><text x="334" y="305">evaluation (Go)</text>
+    <rect x="434" y="290" width="76" height="22" rx="3" fill="#f5f7f9" stroke="#d5dae0"/><text x="440" y="305">analytics (Py)</text>
+  </g>
+  <text x="34" y="332" font-size="9" fill="#5f6873">Jobs de migração do schema (hook do ArgoCD) · HPA · Ingress NGINX · metrics-server</text>
+  <rect x="24" y="360" width="494" height="48" rx="4" fill="#fff" stroke="#5f6873"/>
+  <text x="34" y="378" font-size="10" font-weight="700">External Secrets Operator (IRSA)</text>
+  <text x="34" y="394" font-size="9" fill="#5f6873">lê o Secrets Manager e cria os Secrets do Kubernetes; nenhum valor sensível no Git</text>
+  <!-- Dados -->
+  <rect x="560" y="175" width="190" height="245" rx="6" fill="#fafbfc" stroke="#16191d" stroke-width="1.4"/>
+  <text x="572" y="194" font-size="11" font-weight="700">Serviços gerenciados</text>
+  <g font-size="9.5">
+    <rect x="572" y="206" width="166" height="30" rx="3" fill="#fff" stroke="#d5dae0"/><text x="580" y="225">3 × RDS PostgreSQL 17</text>
+    <rect x="572" y="244" width="166" height="30" rx="3" fill="#fff" stroke="#d5dae0"/><text x="580" y="263">ElastiCache Redis 7.1</text>
+    <rect x="572" y="282" width="166" height="30" rx="3" fill="#fff" stroke="#d5dae0"/><text x="580" y="301">SQS (fila de eventos)</text>
+    <rect x="572" y="320" width="166" height="30" rx="3" fill="#fff" stroke="#d5dae0"/><text x="580" y="339">DynamoDB (analytics)</text>
+    <rect x="572" y="358" width="166" height="50" rx="3" fill="#fff" stroke="#d5dae0"/><text x="580" y="377">Secrets Manager</text><text x="580" y="392" font-size="8.5" fill="#5f6873">senhas e chaves dos serviços</text>
+  </g>
+  <line x1="685" y1="140" x2="480" y2="204" stroke="#5f6873" stroke-width="1.4" marker-end="url(#seta)" stroke-dasharray="4 3"/>
+  <text x="560" y="168" font-size="8.5" fill="#5f6873">ArgoCD observa</text>
+  <line x1="530" y1="290" x2="558" y2="290" stroke="#5f6873" stroke-width="1.4" marker-end="url(#seta)"/>
+  <line x1="190" y1="140" x2="190" y2="173" stroke="#d5dae0" stroke-width="1" />
+</svg>
+</div>
+<p class="cap">Figura 1 — Visão geral da solução: do commit no GitHub ao Pod no EKS, passando pelo CI de segurança,
+pelo ECR e pelo repositório GitOps.</p>
+
+<table>
+<tr><th>Camada</th><th>Ferramenta</th><th>Onde está</th></tr>
+<tr><td>Infraestrutura</td><td>Terraform 1.17, estado em S3 com lockfile</td><td>repositório <code>togglemaster-fase3</code></td></tr>
+<tr><td>Integração contínua</td><td>GitHub Actions, Trivy, gosec, bandit, golangci-lint, flake8</td><td>um <code>ci.yml</code> em cada repositório de serviço</td></tr>
+<tr><td>Estado desejado do cluster</td><td>manifestos Kubernetes e Applications do ArgoCD</td><td>repositório <code>togglemaster-gitops</code></td></tr>
+<tr><td>Entrega contínua</td><td>ArgoCD 3.5 com sincronização automática</td><td>namespace <code>argocd</code> no EKS</td></tr>
+<tr><td>Segredos</td><td>AWS Secrets Manager + External Secrets Operator</td><td>criados pelo Terraform, sem valores no Git</td></tr>
+</table>
+<p class="cap">Tabela 2 — Camadas da solução e onde cada uma vive.</p>
+
+<h3>2.1 O caminho de uma mudança</h3>
+<ol>
+  <li>Faço um commit na <code>main</code> de um serviço (ou abro um Pull Request).</li>
+  <li>O workflow compila, testa, roda o lint e as duas varreduras de segurança; qualquer falha interrompe o fluxo.</li>
+  <li>Passando, o pipeline constrói a imagem, a varre de novo com o Trivy e, só na <code>main</code>, a envia ao ECR com a tag <code>v1.0.0-&lt;hash do commit&gt;</code>.</li>
+  <li>O último job clona o repositório GitOps, troca a tag no <code>deployment.yaml</code> do serviço e faz o commit.</li>
+  <li>O ArgoCD, que observa esse repositório, detecta o commit e sincroniza o cluster sozinho.</li>
+</ol>
+
+<!-- ═══════════════════════ 3 ═══════════════════════ -->
+<h2 id="s3">3. Infraestrutura como Código com Terraform</h2>
+<p>Substituí a criação via AWS CLI da Fase 2 por um projeto Terraform organizado em módulos, com dois
+ambientes raiz: <code>envs/prod</code> (infraestrutura) e <code>envs/gitops</code> (ArgoCD e External Secrets,
+instalados por Helm depois que o cluster existe).</p>
+
+<h3>3.1 Módulos</h3>
+<table>
+<tr><th>Módulo</th><th>O que cria</th></tr>
+<tr><td><code>rede</code></td><td>VPC, 2 sub-redes públicas e 2 privadas em 2 zonas, Internet Gateway, NAT opcional e route tables, com as tags que o EKS exige para os Load Balancers</td></tr>
+<tr><td><code>eks</code></td><td>cluster 1.36 com criptografia de secrets por KMS e logs do control plane, node group <code>t3.medium</code> (mín. 1, desejado 2, máx. 4), roles do cluster e dos nós e o provedor OIDC para IRSA</td></tr>
+<tr><td><code>rds</code></td><td>3 instâncias PostgreSQL 17 (<code>auth</code>, <code>flag</code>, <code>targeting</code>) em sub-rede privada, acessíveis apenas pelo cluster, com backup de 7 dias e autenticação IAM</td></tr>
+<tr><td><code>elasticache</code></td><td>Redis 7.1 em <code>cache.t3.micro</code>, acessível apenas pelo cluster</td></tr>
+<tr><td><code>dynamodb</code> / <code>sqs</code></td><td>tabela <code>ToggleMasterAnalytics</code> (chave <code>event_id</code>, sob demanda, com PITR) e a fila <code>togglemaster-evaluation-events</code></td></tr>
+<tr><td><code>ecr</code></td><td>5 repositórios com tags imutáveis, scan no push e retenção das 20 imagens mais recentes</td></tr>
+<tr><td><code>irsa</code></td><td>roles do <code>evaluation-sa</code> (envia ao SQS) e do <code>analytics-sa</code> (consome o SQS e grava no DynamoDB), com permissão só nos recursos necessários</td></tr>
+<tr><td><code>github_oidc</code></td><td>provedor OIDC do GitHub e a role que o CI assume para publicar no ECR, restrita à branch <code>main</code> dos 5 repositórios</td></tr>
+<tr><td><code>segredos</code> / <code>eso</code></td><td>segredos por serviço no Secrets Manager e a role (IRSA) que o External Secrets usa para lê-los</td></tr>
+</table>
+<p class="cap">Tabela 3 — Módulos do projeto Terraform.</p>
+
+<h3>3.2 Estado remoto</h3>
+<p>O <code>terraform.tfstate</code> não fica local. Criei um bucket S3 com versionamento, criptografia AES256 e
+acesso público bloqueado, e configurei o backend com <code>use_lockfile = true</code>, que dispensa a tabela
+do DynamoDB para o bloqueio. O nome do bucket fica fora do código, num arquivo <code>backend.hcl</code> ignorado
+pelo Git; o repositório só traz um <code>backend.hcl.exemplo</code>.</p>
+
+<h3>3.3 Versões escolhidas com base nas fontes</h3>
+<p>Na Fase 2 usei EKS 1.31 e PostgreSQL 16.4. Antes de reaproveitar, consultei a documentação oficial da
+AWS e as duas versões estavam defasadas: o EKS 1.31 já estava em suporte estendido (US$ 0,60 por hora de
+cluster, contra US$ 0,10 do suporte padrão) e o 1.34 sai do suporte padrão em 02/12/2026. Usei o
+<b>EKS 1.36</b>, em suporte padrão até agosto de 2027. No RDS, o 16.4 não aparece mais entre as versões
+menores do calendário de lançamentos, e usei o <b>PostgreSQL 17</b>, em suporte padrão até fevereiro de 2030.</p>
+
+<h3>3.4 Resultado do apply</h3>
+<table>
+<tr><th>Ambiente</th><th>Recursos</th><th>Duração</th><th>Resultado</th></tr>
+<tr><td><code>envs/prod</code></td><td>71 criados, 0 alterados, 0 destruídos</td><td>12 min (20:42 às 20:54 UTC de 02/11/2026)</td><td class="c"><span class="ok">Apply complete</span></td></tr>
+<tr><td><code>envs/gitops</code></td><td>3 criados (External Secrets, ArgoCD, aplicação raiz)</td><td>cerca de 2 min</td><td class="c"><span class="ok">Apply complete</span></td></tr>
+</table>
+<p class="cap">Tabela 4 — Execução real do <code>terraform apply</code> na AWS (log completo no Apêndice A).</p>
+
+<h3>3.5 Segurança do próprio código Terraform</h3>
+<p>Passei o <code>trivy config</code> no projeto antes do primeiro apply. Ele apontou achados que eu mesmo tinha
+introduzido: sub-redes públicas atribuindo IP público a tudo, endpoint do EKS aberto para
+<code>0.0.0.0/0</code> (CRITICAL), secrets do cluster sem criptografia (HIGH), além de logs do control plane,
+backups e autenticação IAM do RDS desligados. Corrigi tudo isso. Restaram três exceções
+conscientes, registradas com justificativa no <code>.trivyignore</code>: o endpoint público do EKS (necessário
+para eu acessar o cluster, mas restrito ao IP da VM), a proteção contra exclusão do RDS (impediria o
+<code>destroy</code> de um ambiente efêmero) e os VPC Flow Logs (custo contínuo, não exigido).</p>
+
+<h3>3.6 Estimativa de custos</h3>
+<p>Calculei a estimativa com os preços da API oficial da AWS (<code>pricing:GetProducts</code>, região
+us-east-1) e das páginas de preço do EKS, da VPC e do KMS, consultados em 02/11/2026. A contagem de IPv4
+públicos (um do NAT e dois do Load Balancer) e dos discos dos nós (2 volumes gp3 de 20 GB) veio do próprio
+ambiente criado.</p>
+
+<table>
+<tr><th>Componente</th><th class="c">Qtd.</th><th class="c">Preço unitário</th><th class="c">US$ por hora</th></tr>
+<tr><td>EKS — plano de controle</td><td class="c">1</td><td class="c">0,1000 /h</td><td class="c">0,1000</td></tr>
+<tr><td>EC2 t3.medium Linux (nós)</td><td class="c">2</td><td class="c">0,0416 /h</td><td class="c">0,0832</td></tr>
+<tr><td>RDS PostgreSQL db.t3.micro, Single-AZ</td><td class="c">3</td><td class="c">0,018 /h</td><td class="c">0,0540</td></tr>
+<tr><td>ElastiCache cache.t3.micro, Redis</td><td class="c">1</td><td class="c">0,017 /h</td><td class="c">0,0170</td></tr>
+<tr><td>NAT Gateway (mais US$ 0,045 por GB processado)</td><td class="c">1</td><td class="c">0,045 /h</td><td class="c">0,0450</td></tr>
+<tr><td>Classic Load Balancer do Ingress</td><td class="c">1</td><td class="c">0,025 /h</td><td class="c">0,0250</td></tr>
+<tr><td>IPv4 público em uso (1 NAT + 2 Load Balancer)</td><td class="c">3</td><td class="c">0,005 /h</td><td class="c">0,0150</td></tr>
+<tr><th colspan="3">Total por hora</th><th class="c">0,3392</th></tr>
+<tr><td>RDS — armazenamento gp2</td><td class="c">60 GB</td><td class="c">0,115 /GB-mês</td><td class="c">6,90 /mês</td></tr>
+<tr><td>EBS gp3 dos nós</td><td class="c">40 GB</td><td class="c">0,08 /GB-mês</td><td class="c">3,20 /mês</td></tr>
+<tr><td>Secrets Manager</td><td class="c">5</td><td class="c">0,40 /mês</td><td class="c">2,00 /mês</td></tr>
+<tr><td>KMS — chave gerenciada pelo cliente</td><td class="c">1</td><td class="c">1,00 /mês</td><td class="c">1,00 /mês</td></tr>
+<tr><th colspan="3">Total mensal (730 h ligados + itens mensais)</th><th class="c">260,72</th></tr>
+</table>
+<p class="cap">Tabela 5 — Estimativa de custo do ambiente completo, em US$, região us-east-1. Não inclui tráfego de
+dados (o NAT cobra por GB), CloudWatch Logs do control plane nem o armazenamento no ECR; o DynamoDB e o SQS são
+sob demanda e têm volume desprezível nesta demonstração.</p>
+
+<div class="fig">
+<svg viewBox="0 0 720 250" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DejaVu Sans, sans-serif">
+  <text x="10" y="18" font-size="11" font-weight="700">Custo por hora do ambiente ligado (US$) — total 0,3392 por hora, cerca de US$ 260,72 por mês</text>
+  <g font-size="10">
+    <text x="10" y="50">EKS plano de controle</text><rect x="230" y="38" width="294" height="16" fill="#16191d"/><text x="530" y="51">0,1000</text>
+    <text x="10" y="80">2 nós t3.medium</text><rect x="230" y="68" width="245" height="16" fill="#3b4652"/><text x="481" y="81">0,0832</text>
+    <text x="10" y="110">3 RDS db.t3.micro</text><rect x="230" y="98" width="159" height="16" fill="#5f6873"/><text x="395" y="111">0,0540</text>
+    <text x="10" y="140">NAT Gateway</text><rect x="230" y="128" width="132" height="16" fill="#7c8793"/><text x="368" y="141">0,0450</text>
+    <text x="10" y="170">Classic Load Balancer</text><rect x="230" y="158" width="74" height="16" fill="#9aa4ae"/><text x="310" y="171">0,0250</text>
+    <text x="10" y="200">ElastiCache Redis</text><rect x="230" y="188" width="50" height="16" fill="#b5bec7"/><text x="286" y="201">0,0170</text>
+    <text x="10" y="230">3 IPv4 públicos</text><rect x="230" y="218" width="44" height="16" fill="#cfd5db"/><text x="280" y="231">0,0150</text>
+  </g>
+</svg>
+</div>
+<p class="cap">Figura 2 — Estimativa de custos AWS: peso de cada componente no valor por hora (gerada a partir da
+Tabela 5, com preços da API oficial da AWS).</p>
+
+<p>O número que importa para a decisão é o por hora. Manter o ambiente ligado apenas durante a validação e a
+gravação, algumas horas, custa em torno de US$ 1 a 3. Deixá-lo ligado um mês inteiro custaria cerca de
+US$ 261, e por isso o <code>terraform destroy</code> faz parte do encerramento desta entrega.</p>
+
+<!-- ═══════════════════════ 4 ═══════════════════════ -->
+<h2 id="s4">4. Pipeline de CI e DevSecOps</h2>
+<p>Cada um dos cinco serviços tem o seu <code>ci.yml</code>, gerado a partir de dois modelos (Go e Python) e
+validado com o <code>actionlint</code>. O workflow roda em todo Pull Request e em todo push na <code>main</code>.</p>
+
+<table>
+<tr><th>Job</th><th>Serviços em Go</th><th>Serviços em Python</th><th>Regra</th></tr>
+<tr><td>Build e testes unitários</td><td><code>go build</code>, <code>go vet</code>, <code>go test</code></td><td><code>compileall</code> e <code>pytest</code> se houver testes</td><td>falha interrompe o fluxo</td></tr>
+<tr><td>Linter</td><td>golangci-lint</td><td>flake8</td><td>falha interrompe o fluxo</td></tr>
+<tr><td>SCA (dependências)</td><td colspan="2">Trivy em modo <code>fs</code></td><td><b>CRITICAL</b> bloqueia</td></tr>
+<tr><td>SAST (código-fonte)</td><td>gosec</td><td>bandit</td><td>severidade alta bloqueia</td></tr>
+<tr><td>Docker build e scan</td><td colspan="2">build, Trivy na imagem e push ao ECR só na <code>main</code></td><td><b>CRITICAL</b> bloqueia</td></tr>
+<tr><td>Atualização do GitOps</td><td colspan="2">troca a tag no <code>deployment.yaml</code> do repositório GitOps</td><td>só na <code>main</code></td></tr>
+</table>
+<p class="cap">Tabela 6 — Estágios do pipeline de cada serviço.</p>
+
+<h3>4.1 Autenticação na AWS sem chave estática</h3>
+<p>O CI não guarda nenhuma chave da AWS. O job de imagem assume, por OIDC, uma role do IAM criada pelo Terraform
+e restrita à branch <code>main</code> dos cinco repositórios, com permissão apenas de envio ao ECR. Isso elimina
+a classe de problema de credencial vazada em segredo de repositório. O único segredo que o CI guarda é o
+<code>GITOPS_TOKEN</code>, usado para gravar no repositório de manifestos.</p>
+
+<h3>4.2 Resultado</h3>
+<p>Os cinco pipelines terminaram verdes e publicaram as imagens no ECR com a tag do commit (por exemplo,
+<code>v1.0.0-f0ea038</code> no <code>auth-service</code>). O código recebido da FIAP, porém, não passou no
+pipeline de primeira, e esse caminho está contado nas Seções 8.1 a 8.4. A Tabela 7 resume o histórico real.</p>
+
+<table>
+<tr><th>Quando (UTC)</th><th>O que aconteceu</th><th>Causa</th></tr>
+<tr><td>20:52</td><td>5 pipelines falham sem criar nenhum job</td><td>condição <code>if</code> sem aspas no workflow; o GitHub rejeitou o arquivo</td></tr>
+<tr><td>20:56</td><td>Go falha no job de segurança</td><td><code>gosec@latest</code> exige Go 1.26; o <code>go.mod</code> pede 1.21</td></tr>
+<tr><td>20:56</td><td>Python falha no login da AWS</td><td>a conta do GitHub usa <i>subject</i> imutável no OIDC</td></tr>
+<tr><td>20:58</td><td>Go falha no scan da imagem</td><td>Trivy encontrou <b>CVE-2025-68121</b> (CRITICAL) na stdlib do Go 1.21.13</td></tr>
+<tr><td>21:10</td><td><span class="ok">5 pipelines verdes</span></td><td>correções das quatro causas acima</td></tr>
+</table>
+<p class="cap">Tabela 7 — Cronologia real das execuções do CI em 02/11/2026.</p>
+
+<div class="box pendente">
+  <b>Demonstração gravada do bloqueio de segurança</b>
+  O bloqueio do CVE da stdlib aconteceu de verdade, mas o enunciado pede que eu insira uma falha de
+  propósito no vídeo (uma dependência vulnerável), mostre o pipeline falhando no passo de segurança e depois
+  corrija. Essa demonstração faz parte da gravação e o link do vídeo consta na Seção 9.
+</div>
+
+<!-- ═══════════════════════ 5 ═══════════════════════ -->
+<h2 id="s5">5. GitOps com ArgoCD</h2>
+<h3>5.1 Repositório de manifestos</h3>
+<p>O repositório <code>togglemaster-gitops</code> contém apenas YAML: <code>apps/&lt;serviço&gt;/</code> com
+Deployment, Service, ConfigMap, ExternalSecret e, quando existem, HPA e ServiceAccount; <code>base/</code> com
+namespaces, o ClusterSecretStore e o Ingress; e <code>argocd/</code> com uma Application por componente. Parti
+dos manifestos da Fase 2, com três ajustes: os Secrets com valores viraram ExternalSecrets, o ServiceAccount do
+IRSA passou a ser declarado no repositório, e as tabelas dos bancos passaram a ser criadas por Jobs de
+migração (Seção 8.7).</p>
+
+<h3>5.2 ArgoCD</h3>
+<p>Instalei o ArgoCD no EKS pelo Terraform (chart Helm <code>argo-cd</code> 10.11.6, versão fixada). Uma
+aplicação raiz (<i>app-of-apps</i>) lê a pasta <code>argocd/</code> do repositório GitOps e cria as demais
+Applications, todas com sincronização automática, <code>prune</code> e <code>selfHeal</code>. Qualquer
+alteração feita à mão no cluster é revertida; o Git é a única fonte de verdade.</p>
+
+<table>
+<tr><th>Application</th><th>Origem</th><th class="c">Estado</th></tr>
+<tr><td><code>auth-service</code>, <code>flag-service</code>, <code>targeting-service</code>, <code>evaluation-service</code>, <code>analytics-service</code></td><td>repositório GitOps, <code>apps/&lt;serviço&gt;</code></td><td class="c"><span class="ok">Synced / Healthy</span></td></tr>
+<tr><td><code>base</code></td><td>repositório GitOps, <code>base/</code></td><td class="c"><span class="ok">Synced / Healthy</span></td></tr>
+<tr><td><code>ingress-nginx</code>, <code>metrics-server</code></td><td>charts Helm oficiais, versões fixadas</td><td class="c"><span class="ok">Synced / Healthy</span></td></tr>
+<tr><td><code>raiz</code></td><td>repositório GitOps, <code>argocd/</code></td><td class="c"><span class="ok">Synced / Healthy</span></td></tr>
+</table>
+<p class="cap">Tabela 8 — Applications gerenciadas pelo ArgoCD (saída real de <code>kubectl get applications</code> no Apêndice A).</p>
+
+<h3>5.3 Atualização automática da tag</h3>
+<p>Ao fim do pipeline, o job <code>gitops</code> clona o repositório de manifestos, troca a tag da imagem no
+<code>deployment.yaml</code> do serviço pelo valor recém-publicado e grava o commit. Os cinco commits resultantes
+(por exemplo, "auth-service: imagem v1.0.0-f0ea038") estão no histórico do repositório. O ArgoCD detectou cada
+um e aplicou o rollout sem nenhuma intervenção minha: os Pods antigos, presos em <code>ErrImagePull</code>
+porque a tag provisória <code>v0.0.0-inicial</code> não existia no ECR, foram substituídos pelos novos.</p>
+
+<h3>5.4 Acesso do ArgoCD ao repositório</h3>
+<p>O ArgoCD lê o repositório por SSH, com uma deploy key somente leitura cadastrada só nesse repositório. Assim
+a configuração funciona igual com o repositório público ou privado, e fechá-lo no final não exige mudar nada
+no cluster.</p>
+
+<div class="box pendente">
+  <b>Interface do ArgoCD</b>
+  O enunciado pede a demonstração da interface gerenciando os 5 microsserviços. A captura da tela do ArgoCD
+  (Applications, árvore de recursos e a sincronização após uma mudança de tag) é feita durante a gravação do
+  vídeo; a Tabela 8 traz o mesmo estado em texto.
+</div>
+
+<!-- ═══════════════════════ 6 ═══════════════════════ -->
+<h2 id="s6">6. Segredos e Segurança</h2>
+<p>O segundo problema do enunciado era a credencial do banco trafegando em arquivos de texto. Na Fase 2, a
+connection string ia para um <code>Secret</code> montado à mão. Nesta fase o caminho passou a ser:</p>
+<ol>
+  <li>o Terraform gera as senhas e a <code>MASTER_KEY</code> (<code>random_password</code>) e as grava no
+      <b>AWS Secrets Manager</b>, um segredo por serviço, já com a connection string pronta;</li>
+  <li>o <b>External Secrets Operator</b>, com uma role IRSA que só lê esses cinco segredos, copia o conteúdo
+      para <code>Secrets</code> do Kubernetes e o mantém atualizado a cada minuto;</li>
+  <li>o repositório GitOps traz apenas o <code>ExternalSecret</code> (o nome do segredo, nunca o valor).</li>
+</ol>
+<p>Além disso, o acesso aos bancos e ao Redis é restrito ao Security Group do cluster, o tráfego do CI para a AWS
+usa OIDC e os repositórios do ECR têm tags imutáveis e scan no push.</p>
+
+<!-- ═══════════════════════ 7 ═══════════════════════ -->
+<h2 id="s7">7. Validação do Ambiente</h2>
+<p>Com o ambiente no ar, validei o fluxo de ponta a ponta pelo Ingress, chamando as mesmas rotas da Fase 2.</p>
+<table>
+<tr><th>Verificação</th><th>Resultado obtido</th></tr>
+<tr><td>Cluster</td><td>2 nós <code>Ready</code> na versão v1.36.5</td></tr>
+<tr><td>ArgoCD</td><td>9 Applications <code>Synced</code> e <code>Healthy</code></td></tr>
+<tr><td>External Secrets</td><td>5 ExternalSecrets em <code>SecretSynced</code></td></tr>
+<tr><td>Migração do schema</td><td>3 Jobs concluídos (<code>CREATE TABLE</code> e trigger em cada banco)</td></tr>
+<tr><td>Chave de serviço</td><td><code>POST /auth/admin/keys</code> devolveu uma chave <code>tm_key_…</code> de 71 caracteres</td></tr>
+<tr><td>Criação da flag e da regra</td><td><code>enable-new-dashboard</code> e regra <code>PERCENTAGE</code> de 50%, ambas gravadas</td></tr>
+<tr><td>Avaliação de 8 usuários</td><td>7 resultados <code>true</code> e 1 <code>false</code>; o resultado é determinístico por <code>user_id</code> e <code>flag_name</code></td></tr>
+<tr><td>Fluxo assíncrono</td><td>8 eventos publicados no SQS e <b>8 itens</b> na tabela <code>ToggleMasterAnalytics</code></td></tr>
+</table>
+<p class="cap">Tabela 9 — Validação funcional do ambiente criado pelo Terraform e entregue pelo ArgoCD.</p>
+
+<!-- ═══════════════════════ 8 ═══════════════════════ -->
+<h2 id="s8">8. Desafios e Decisões Técnicas</h2>
+
+<h3>8.1 O código recebido reprovou no meu próprio pipeline</h3>
+<p>Antes de publicar, rodei as ferramentas na VM e o código dos serviços já não passava. No <code>auth-service</code>
+e no <code>evaluation-service</code>, o golangci-lint apontou retornos de erro ignorados e o uso do
+<code>io/ioutil</code>, obsoleto desde o Go 1.19. O gosec marcou como HIGH (SSRF, G704) as chamadas HTTP do
+<code>evaluation-service</code>. Nos três serviços Python, o flake8 trouxe de 17 a 43 avisos de estilo e um
+import sem uso. Corrigi sem mudar comportamento: <code>_ =</code> explícito nos retornos, <code>io.ReadAll</code>,
+autopep8 e autoflake. No SSRF, anotei com <code>#nosec</code> e justificativa, porque a URL vem de variáveis
+definidas pelo operador no ConfigMap e nunca de entrada do usuário. Registrei tudo em <code>docs/PATCHES.md</code>.</p>
+
+<h3>8.2 O Trivy barrou uma vulnerabilidade real</h3>
+<p>O scan de imagem reprovou os dois serviços Go com o <b>CVE-2025-68121</b> (CRITICAL, validação incorreta de
+certificado no <code>crypto/tls</code>), presente na biblioteca padrão do Go 1.21.13 usada no estágio de build. É
+exatamente o tipo de falha que o enunciado conta que "passou despercebida e foi para produção". Subi o build
+para <code>golang:1.25-alpine</code> (Go 1.25.14, que contém a correção), validei na VM que as duas imagens
+passam no Trivy sem nenhum CRITICAL e o pipeline voltou a ficar verde. O CVE só foi encontrado porque o scan roda
+sobre a imagem final, e não apenas sobre as dependências do <code>go.mod</code>.</p>
+
+<h3>8.3 gosec e a versão do Go</h3>
+<p>O <code>gosec@latest</code> exige Go 1.26 ou superior, mas o <code>go.mod</code> dos serviços pede Go 1.21 e o
+workflow usava essa versão. O job de segurança passou a usar o Go estável só para a análise, o que não afeta a
+versão com que o serviço é compilado.</p>
+
+<h3>8.4 Aspas perdidas no workflow</h3>
+<p>Os cinco pipelines falharam sem executar nenhum job. O <code>actionlint</code> mostrou que a condição
+<code>github.event_name == 'push'</code> tinha perdido as aspas ao ser gerada pelo meu shell, e o GitHub rejeitou o
+arquivo inteiro. Corrigi o modelo, regerei os cinco workflows e passei a validá-los com o <code>actionlint</code>
+antes de cada push.</p>
+
+<h3>8.5 OIDC do GitHub com subject imutável</h3>
+<p>A AWS recusava o login do CI (<code>Not authorized to perform sts:AssumeRoleWithWebIdentity</code>), embora a
+role e o provedor estivessem corretos. Consultei a configuração da conta no GitHub e vi que ela usa <i>subject</i>
+imutável: o campo <code>sub</code> do token traz os IDs numéricos do dono e do repositório
+(<code>repo:karlos-rodrigues@&lt;id&gt;/flag-service@&lt;id&gt;:ref:refs/heads/main</code>), e a trust policy que eu tinha
+escrito usava só os nomes. Passei a usar os IDs, lidos pela API do GitHub e declarados em uma variável do
+Terraform. O <code>plan</code> mostrou uma única alteração, na trust policy.</p>
+
+<h3>8.6 Senha do banco: gerenciada pelo RDS ou gerada pelo Terraform</h3>
+<p>Comecei com <code>manage_master_user_password</code>, em que o RDS guarda a senha no Secrets Manager. O problema é que
+o ExternalSecret precisaria do nome aleatório desse segredo, que mudaria a cada ambiente e voltaria a colocar
+informação específica do ambiente no Git. Optei por gerar a senha no Terraform e gravar o segredo já montado. O
+custo dessa escolha é que a senha passa a existir no <i>state</i>, que está num bucket privado, versionado e
+criptografado. Considero a troca aceitável para o ganho de manter o repositório GitOps livre de valores do
+ambiente.</p>
+
+<h3>8.7 As tabelas dos bancos não existiam</h3>
+<p>Com o cluster no ar, o <code>auth-service</code> respondia 500 e o log mostrava
+<code>relation "api_keys" does not exist</code>: na Fase 2 eu criava as tabelas à mão, e isso contraria "se não
+está no código, não existe". Criei, no repositório GitOps, um Job por serviço com banco (hook <i>Sync</i> do
+ArgoCD, com a ordem garantida por <i>sync waves</i>: ExternalSecret, depois ConfigMap com o <code>init.sql</code>,
+depois o Job). Os três <code>init.sql</code> já eram idempotentes, então o Job pode rodar a cada sincronização
+sem risco.</p>
+
+<h3>8.8 Dependência circular da chave de serviço</h3>
+<p>O <code>evaluation-service</code> precisa de uma chave de API que só o <code>auth-service</code> pode gerar, e o
+<code>auth-service</code> só existe depois do deploy. É o mesmo ciclo da Fase 2. O Terraform grava um valor
+provisório no segredo e ignora mudanças nele (<code>ignore_changes</code>), e um passo único pós-apply, documentado em
+<code>docs/BOOTSTRAP-POS-APPLY.md</code>, gera a chave, atualiza o Secrets Manager e reinicia o deployment. Não
+automatizei esse passo; é um ponto a melhorar.</p>
+
+<h3>8.9 Custo e escolha de versões</h3>
+<p>Descrevi na Seção 3.3 a troca do EKS 1.31 e do PostgreSQL 16.4 por versões em suporte padrão, o que evita pagar
+suporte estendido. A Seção 3.6 explica por que o ambiente fica ligado apenas durante a validação.</p>
+
+<h3>8.10 Ingress NGINX descontinuado</h3>
+<p>Mantive o Ingress NGINX da Fase 2 para não misturar duas mudanças, mas, ao pesquisar a versão do chart,
+descobri que o projeto foi aposentado em março de 2026 e já não recebe correções de segurança (comunicado do
+Kubernetes de janeiro de 2026). É uma limitação consciente desta entrega: em um ambiente real, eu migraria para o
+Gateway API ou para outro controller mantido.</p>
+
+<!-- ═══════════════════════ 9 ═══════════════════════ -->
+<h2 id="s9">9. Considerações Finais e Links do Projeto</h2>
+<p>Quatro dores do enunciado viraram quatro mecanismos: o ambiente se recria com <code>terraform apply</code>
+(12 minutos na AWS real), nenhuma mudança chega ao cluster sem passar por um pipeline que varre dependências,
+código e imagem, o deploy é feito pelo ArgoCD a partir do Git, e nenhuma senha está em arquivo ou no repositório.
+O melhor argumento a favor do desenho veio do próprio pipeline, que barrou um CVE crítico real antes que
+chegasse ao cluster.</p>
+
+<h3>9.1 Limitações assumidas</h3>
+<ul>
+  <li>Os repositórios dos serviços não têm testes unitários; o job de testes compila e verifica, mas não cobre regras de negócio.</li>
+  <li>O Ingress NGINX está sem manutenção upstream (Seção 8.10).</li>
+  <li>O endpoint público da API do EKS continua ligado, restrito ao IP da VM de trabalho; a alternativa seria VPN ou bastião.</li>
+  <li>O SAST bloqueia em severidade alta, porque as ferramentas escolhidas não têm nível crítico.</li>
+  <li>O bootstrap da chave de serviço é um passo manual documentado.</li>
+</ul>
+
+<h3>9.2 Links</h3>
+<table>
+<tr><th>Item</th><th>Endereço</th></tr>
+<tr><td>Código Terraform, workflows-modelo e documentação</td><td><code>https://github.com/karlos-rodrigues/togglemaster-fase3</code></td></tr>
+<tr><td>Manifestos GitOps</td><td><code>https://github.com/karlos-rodrigues/togglemaster-gitops</code></td></tr>
+<tr><td>Serviços com o workflow de CI</td><td><code>https://github.com/karlos-rodrigues/{auth,flag,targeting,evaluation,analytics}-service</code></td></tr>
+<tr><td>Vídeo de demonstração (até 20 min)</td><td class="pend">link a incluir após a gravação</td></tr>
+</table>
+<p class="cap">Tabela 10 — Repositórios e vídeo da entrega.</p>
+
+<!-- ═══════════════════════ APÊNDICE A ═══════════════════════ -->
+<h2 id="apa">Apêndice A — Evidências de Execução</h2>
+<p>Saídas reais coletadas no ambiente em 02/11/2026.</p>
+
+<h3>A.1 Terraform</h3>
+<pre># terraform prod: início 2026-11-02T20:42:27Z, fim 2026-11-02T20:54:28Z
+Plan: 71 to add, 0 to change, 0 to destroy.
+Apply complete! Resources: 71 added, 0 changed, 0 destroyed.
+
+# terraform gitops
+helm_release.external_secrets: Creation complete after 1m5s [id=external-secrets]
+helm_release.argocd: Creation complete after 1m35s [id=argocd]
+helm_release.raiz: Creation complete after 4s [id=togglemaster-raiz]
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.</pre>
+
+<h3>A.2 Nós do cluster</h3>
+<pre>NAME                          STATUS   ROLES    AGE   VERSION               INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                  
+ip-10-0-10-189.ec2.internal   Ready    &lt;none&gt;   84m   v1.36.5-eks-6e7947a   10.0.10.189   &lt;none&gt;        Amazon Linux 2023.12.20261
+ip-10-0-11-89.ec2.internal    Ready    &lt;none&gt;   84m   v1.36.5-eks-6e7947a   10.0.11.89    &lt;none&gt;        Amazon Linux 2023.12.20261</pre>
+
+<h3>A.3 Applications do ArgoCD</h3>
+<pre>NAME                 SYNC STATUS   HEALTH STATUS
+analytics-service    Synced        Healthy
+auth-service         Synced        Healthy
+base                 Synced        Healthy
+evaluation-service   Synced        Healthy
+flag-service         Synced        Healthy
+ingress-nginx        Synced        Healthy
+metrics-server       Synced        Healthy
+raiz                 Synced        Healthy
+targeting-service    Synced        Healthy</pre>
+
+<h3>A.4 External Secrets</h3>
+<pre>NAMESPACE    NAME                        STORETYPE            STORE                 REFRESH INTERVAL   STATUS         READY   LAST SYNC
+analytics    analytics-secrets           ClusterSecretStore   aws-secrets-manager   1m                 SecretSynced   True    37s
+auth         auth-secrets                ClusterSecretStore   aws-secrets-manager   1m                 SecretSynced   True    56s
+evaluation   evaluation-secrets          ClusterSecretStore   aws-secrets-manager   1m                 SecretSynced   True    20s
+flags        flag-service-secrets        ClusterSecretStore   aws-secrets-manager   1m                 SecretSynced   True    54s
+targeting    targeting-service-secrets   ClusterSecretStore   aws-secrets-manager   1m                 SecretSynced   True    54s</pre>
+
+<h3>A.5 Imagens no ECR (tag = hash do commit)</h3>
+<pre>auth-service: v1.0.0-f0ea038
+flag-service: v1.0.0-e4dcb55
+targeting-service: v1.0.0-8f84190
+evaluation-service: v1.0.0-bf0203d
+analytics-service: v1.0.0-4cb3624</pre>
+
+<h3>A.6 Commits de tag feitos pelo CI no repositório GitOps</h3>
+<pre>b4cef97 Karlos Rodrigues gitops: Jobs de migração do schema (hook do ArgoCD) para auth, flag e targeting
+54584cc Karlos Rodrigues evaluation-service: imagem v1.0.0-bf0203d
+f9ab1e1 Karlos Rodrigues auth-service: imagem v1.0.0-f0ea038
+baab8be Karlos Rodrigues analytics-service: imagem v1.0.0-4cb3624
+66d761a Karlos Rodrigues targeting-service: imagem v1.0.0-8f84190
+5d96d1f Karlos Rodrigues flag-service: imagem v1.0.0-e4dcb55
+59de0ee Karlos Rodrigues argocd: acesso ao repositório privado por SSH
+14c7564 Karlos Rodrigues gitops: manifestos dos 5 serviços, base e Applications do ArgoCD</pre>
+
+<h3>A.7 Itens gravados pelo analytics-service</h3>
+<pre>itens DynamoDB: 8</pre>
+
+<!-- ═══════════════════════ APÊNDICE B ═══════════════════════ -->
+<h2 id="apb">Apêndice B — De-para: Requisitos do Enunciado × Entregas</h2>
+<table>
+<tr><th>Requisito do enunciado</th><th>Entrega</th><th class="c">Status</th></tr>
+<tr><td>Networking: VPC, sub-redes públicas e privadas, IGW, route tables</td><td>módulo <code>rede</code></td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>Cluster EKS e Node Groups</td><td>módulo <code>eks</code> (Opção B: roles criadas pelo Terraform)</td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>3 RDS PostgreSQL, 1 ElastiCache Redis, 1 DynamoDB</td><td>módulos <code>rds</code>, <code>elasticache</code>, <code>dynamodb</code></td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>1 fila SQS e 5 repositórios ECR</td><td>módulos <code>sqs</code> e <code>ecr</code></td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>Estado remoto em S3 (e <code>use_lockfile</code>)</td><td>backend S3 com lockfile, versionado e criptografado</td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>Workflow de CI para cada um dos 5 serviços, em PR e push na main</td><td>5 arquivos <code>ci.yml</code></td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>Build e testes unitários</td><td>build, vet e test (Go); compileall e pytest (Python)</td><td class="c"><span class="parcial">Parcial</span> — os repositórios não têm testes</td></tr>
+<tr><td>Linter / análise estática</td><td>golangci-lint e flake8</td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>SCA e SAST, com bloqueio em CRITICAL</td><td>Trivy fs; gosec e bandit</td><td class="c"><span class="ok">Feito</span> — SAST bloqueia em alta severidade</td></tr>
+<tr><td>Docker build, scan, login no ECR e push com hash do commit</td><td>job de imagem com Trivy e OIDC</td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>Repositório GitOps separado</td><td><code>togglemaster-gitops</code></td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>ArgoCD instalado no EKS</td><td>Helm pelo Terraform</td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>CI atualiza a tag da imagem no GitOps</td><td>job <code>gitops</code> do workflow</td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>ArgoCD sincroniza automaticamente</td><td>auto-sync, prune e selfHeal</td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>Interface do ArgoCD gerenciando os 5 serviços</td><td>captura durante a gravação</td><td class="c"><span class="pend">Pendente (vídeo)</span></td></tr>
+<tr><td>Vídeo de demonstração (até 20 min)</td><td>roteiro e ambiente prontos</td><td class="c"><span class="pend">Pendente</span></td></tr>
+<tr><td>Código no repositório</td><td>Terraform, workflows e manifestos publicados</td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>Relatório: participantes, links, desafios e decisões</td><td>este documento</td><td class="c"><span class="ok">Feito</span></td></tr>
+<tr><td>Print da estimativa de custos AWS</td><td>Tabela 5 e Figura 2</td><td class="c"><span class="ok">Feito</span></td></tr>
+</table>
+<p class="cap">Tabela 11 — Cobertura dos requisitos do enunciado da Fase 3.</p>
+
+</body>
+</html>
